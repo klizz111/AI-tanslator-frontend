@@ -51,7 +51,7 @@ const handleTranslate = async () => {
   <div class="container">
     <div class="header">
       <h1>AI翻译助手</h1>
-      <a href="https://github.com/yourusername" target="_blank" class="profile-link">
+      <a href="https://klizz.online" target="_blank" class="profile-link">
         <span class="profile-icon">🤓</span>
         个人主页
       </a>
