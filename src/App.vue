@@ -50,7 +50,7 @@ const handleTranslate = async () => {
 <template>
   <div class="container">
     <div class="header">
-      <h1>英文翻译助手</h1>
+      <h1>AI翻译助手</h1>
       <a href="https://github.com/yourusername" target="_blank" class="profile-link">
         <span class="profile-icon">🤓</span>
         个人主页
@@ -60,7 +60,7 @@ const handleTranslate = async () => {
     <div class="input-section">
       <textarea
         v-model="inputText"
-        placeholder="请输入要翻译的英文文本..."
+        placeholder="请输入要翻译的文本..."
         rows="4"
         class="input-text"
       ></textarea>
