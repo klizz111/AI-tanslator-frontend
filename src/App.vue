@@ -18,7 +18,7 @@ const handleTranslate = async () => {
   error.value = ''
 
   try {
-    const response = await axios.post('http://localhost:8000/api/translation', {
+    const response = await axios.post('http://hk.klizz.asia:8000/api/translation', {
       text: inputText.value
     })
 
