@@ -22,12 +22,24 @@ const handleTranslate = async () => {
       text: inputText.value
     })
 
-    // 解析返回的JSON字符串
-    const result = JSON.parse(response.data)
+    // 打印返回的数据以进行调试
+    console.log('Response data:', response.data)
+
+    // 如果 response.data 是字符串且格式正确，直接解析
+    const result = typeof response.data === 'string' ? JSON.parse(response.data) : response.data
     translation.value = result.translation
     analysis.value = result.analysis
   } catch (err) {
-    error.value = '翻译请求失败，请稍后重试'
+    if (err.response) {
+      // 服务器返回了一个状态码，超出了2xx范围
+      error.value = `请求失败: ${err.response.status} - ${err.response.data}`
+    } else if (err.request) {
+      // 请求已经发出，但没有收到响应
+      error.value = '没有收到服务器响应，请检查网络连接'
+    } else {
+      // 其他错误
+      error.value = `请求错误: ${err.message}`
+    }
     console.error('Translation error:', err)
   } finally {
     loading.value = false
