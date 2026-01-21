@@ -29,8 +29,8 @@ const handleTranslate = async () => {
   try {
     const endpoint =
       lang.value === 'zh'
-        ? 'http://159.75.204.213:15064/api/translation'
-        : 'http://159.75.204.213:15064/api/transtoEnglish'
+        ? 'https://t.klizz.top/api/translation'
+        : 'https://t.klizz.top/api/transtoEnglish'
 
     const response = await axios.post(endpoint, {
       text: inputText.value
