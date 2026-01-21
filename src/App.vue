@@ -7,6 +7,15 @@ const translation = ref('')
 const analysis = ref('')
 const loading = ref(false)
 const error = ref('')
+const lang = ref<'zh' | 'en'>('en') // 可选：默认中文；不需要可改回 'en'
+
+const toggleLang = () => {
+  lang.value = lang.value === 'zh' ? 'en' : 'zh'
+  // 可选：切换语言时清空展示，避免误解
+  translation.value = ''
+  analysis.value = ''
+  error.value = ''
+}
 
 const handleTranslate = async () => {
   if (!inputText.value.trim()) {
@@ -18,7 +27,12 @@ const handleTranslate = async () => {
   error.value = ''
 
   try {
-    const response = await axios.post('http://hk.klizz.asia:8000/api/translation', {
+    const endpoint =
+      lang.value === 'zh'
+        ? 'http://t.klizz.top:15064/api/translation'
+        : 'http://t.klizz.top:15064/api/transtoEnglish'
+
+    const response = await axios.post(endpoint, {
       text: inputText.value
     })
 
@@ -51,10 +65,15 @@ const handleTranslate = async () => {
   <div class="container">
     <div class="header">
       <h1>AI翻译助手</h1>
-      <a href="https://github.com/yourusername" target="_blank" class="profile-link">
-        <span class="profile-icon">🤓</span>
-        个人主页
-      </a>
+      <div class="header-actions">
+        <button class="lang-toggle" type="button" @click="toggleLang">
+          {{ lang === 'zh' ? '中文' : 'English' }}
+        </button>
+        <a href="https://github.com/yourusername" target="_blank" class="profile-link">
+          <span class="profile-icon">🤓</span>
+          个人主页
+        </a>
+      </div>
     </div>
     
     <div class="input-section">
@@ -108,6 +127,26 @@ const handleTranslate = async () => {
 h1 {
   color: #2c3e50;
   margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.lang-toggle {
+  background: transparent;
+  border: 1px solid #4CAF50;
+  color: #4CAF50;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.lang-toggle:hover {
+  background: rgba(76, 175, 80, 0.08);
 }
 
 .profile-link {
