@@ -43,16 +43,17 @@ const handleTranslate = async () => {
     const result = typeof response.data === 'string' ? JSON.parse(response.data) : response.data
     translation.value = result.translation
     analysis.value = result.analysis
-  } catch (err) {
-    if (err.response) {
-      // 服务器返回了一个状态码，超出了2xx范围
-      error.value = `请求失败: ${err.response.status} - ${err.response.data}`
-    } else if (err.request) {
-      // 请求已经发出，但没有收到响应
-      error.value = '没有收到服务器响应，请检查网络连接'
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      if (err.response) {
+        error.value = `请求失败: ${err.response.status} - ${JSON.stringify(err.response.data)}`
+      } else if (err.request) {
+        error.value = '没有收到服务器响应，请检查网络连接'
+      } else {
+        error.value = `请求错误: ${err.message}`
+      }
     } else {
-      // 其他错误
-      error.value = `请求错误: ${err.message}`
+      error.value = `请求错误: ${err instanceof Error ? err.message : String(err)}`
     }
     console.error('Translation error:', err)
   } finally {
@@ -69,7 +70,7 @@ const handleTranslate = async () => {
         <button class="lang-toggle" type="button" @click="toggleLang">
           {{ lang === 'zh' ? '中文' : 'English' }}
         </button>
-        <a href="https://github.com/yourusername" target="_blank" class="profile-link">
+        <a href="https://klizz.online" target="_blank" class="profile-link">
           <span class="profile-icon">🤓</span>
           个人主页
         </a>
